@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: newrelic-bundle
+  namespace: argocd
+spec:
+  project: default
+  source:
+    # REPLACE THIS with your actual Git repository URL
+    repoURL: https://github.com/kirthikumar-create/argocdtesting.git
+    targetRevision: main
+    # REPLACE THIS with the folder path where you saved Chart.yaml and values.yaml
+    path: charts/newrelic
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: newrelic
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
